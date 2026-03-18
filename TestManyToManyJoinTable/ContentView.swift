@@ -7,49 +7,55 @@
 
 import SwiftUI
 import SwiftData
+import OSLog
+
+enum TabSelection: String, Hashable, RawRepresentable, Identifiable, CaseIterable {
+    case recipes
+    case keywords
+}
+
+
 
 struct ContentView: View {
     @Environment(\.modelContext) private var modelContext
-    @Query private var items: [Item]
+    @State private var tabSelection: TabSelection = .recipes
+    @State private var model: AppModel = .init()
+    let log = Logger(subsystem: "TestManyToManyJoinTable", category: "ContentView")
+    let container: ModelContainer
 
     var body: some View {
-        NavigationSplitView {
-            List {
-                ForEach(items) { item in
-                    NavigationLink {
-                        Text("Item at \(item.timestamp, format: Date.FormatStyle(date: .numeric, time: .standard))")
-                    } label: {
-                        Text(item.timestamp, format: Date.FormatStyle(date: .numeric, time: .standard))
-                    }
-                }
-                .onDelete(perform: deleteItems)
+        TabView(selection: $tabSelection) {
+            
+            Tab(value: TabSelection.recipes) {
+                RecipeListNavigator(appModel: model, container: container)
             }
-            .toolbar {
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    EditButton()
-                }
-                ToolbarItem {
-                    Button(action: addItem) {
-                        Label("Add Item", systemImage: "plus")
-                    }
-                }
+            
+            Tab(value: TabSelection.keywords) {
+                KeywordListNavigator(appModel: model)
             }
-        } detail: {
-            Text("Select an item")
+        }
+        .task {
+            do {
+                try await model.fetchAllRecipes(container: container)
+                try await model.fetchAllKeywords(container: container)
+            }
+            catch let error {
+                log.error("Failed to fetch either keywords or recipes. Error Received: \(error.localizedDescription)")
+            }
         }
     }
 
-    private func addItem() {
+    private func addRecipe() {
         withAnimation {
-            let newItem = Item(timestamp: Date())
+            let newItem = Recipe(timestamp: Date())
             modelContext.insert(newItem)
         }
     }
 
-    private func deleteItems(offsets: IndexSet) {
+    private func deleteRecipes(offsets: IndexSet) {
         withAnimation {
             for index in offsets {
-                modelContext.delete(items[index])
+                modelContext.delete(recipes[index])
             }
         }
     }
@@ -57,5 +63,5 @@ struct ContentView: View {
 
 #Preview {
     ContentView()
-        .modelContainer(for: Item.self, inMemory: true)
+        .modelContainer(for: Recipe.self, inMemory: true)
 }

@@ -10,23 +10,13 @@ import SwiftData
 
 @main
 struct TestManyToManyJoinTableApp: App {
-    var sharedModelContainer: ModelContainer = {
-        let schema = Schema([
-            Item.self,
-        ])
-        let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
+    let dataProvider = DataProvider.shared
 
-        do {
-            return try ModelContainer(for: schema, configurations: [modelConfiguration])
-        } catch {
-            fatalError("Could not create ModelContainer: \(error)")
-        }
-    }()
 
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            ContentView(container: dataProvider.sharedModelContainer)
         }
-        .modelContainer(sharedModelContainer)
+        .modelContainer(dataProvider.sharedModelContainer)
     }
 }

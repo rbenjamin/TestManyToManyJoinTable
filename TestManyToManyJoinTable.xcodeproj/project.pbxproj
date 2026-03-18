@@ -6,6 +6,11 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		B5FDC2A12F6A09D8005D07B4 /* UserInterfaceExtensions in Frameworks */ = {isa = PBXBuildFile; productRef = B5FDC2A02F6A09D8005D07B4 /* UserInterfaceExtensions */; };
+		B5FDC2A62F6A0A40005D07B4 /* Pow in Frameworks */ = {isa = PBXBuildFile; productRef = B5FDC2A52F6A0A40005D07B4 /* Pow */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
 		B5FDC2582F69FCA0005D07B4 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -34,6 +39,7 @@
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Info.plist,
+				SwiftData/DataProvider,
 			);
 			target = B5FDC2452F69FC9C005D07B4 /* TestManyToManyJoinTable */;
 		};
@@ -65,6 +71,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B5FDC2A12F6A09D8005D07B4 /* UserInterfaceExtensions in Frameworks */,
+				B5FDC2A62F6A0A40005D07B4 /* Pow in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -125,6 +133,8 @@
 			);
 			name = TestManyToManyJoinTable;
 			packageProductDependencies = (
+				B5FDC2A02F6A09D8005D07B4 /* UserInterfaceExtensions */,
+				B5FDC2A52F6A0A40005D07B4 /* Pow */,
 			);
 			productName = TestManyToManyJoinTable;
 			productReference = B5FDC2462F69FC9C005D07B4 /* TestManyToManyJoinTable.app */;
@@ -208,6 +218,10 @@
 			);
 			mainGroup = B5FDC23D2F69FC9C005D07B4;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				B5FDC29F2F6A09D8005D07B4 /* XCLocalSwiftPackageReference "../Cookery/Cookery/Extensions/UserInterfaceExtensions" */,
+				B5FDC2A42F6A0A40005D07B4 /* XCRemoteSwiftPackageReference "Pow" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = B5FDC2472F69FC9C005D07B4 /* Products */;
 			projectDirPath = "";
@@ -595,6 +609,36 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCLocalSwiftPackageReference section */
+		B5FDC29F2F6A09D8005D07B4 /* XCLocalSwiftPackageReference "../Cookery/Cookery/Extensions/UserInterfaceExtensions" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = ../Cookery/Cookery/Extensions/UserInterfaceExtensions;
+		};
+/* End XCLocalSwiftPackageReference section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		B5FDC2A42F6A0A40005D07B4 /* XCRemoteSwiftPackageReference "Pow" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/EmergeTools/Pow";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.5;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		B5FDC2A02F6A09D8005D07B4 /* UserInterfaceExtensions */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = UserInterfaceExtensions;
+		};
+		B5FDC2A52F6A0A40005D07B4 /* Pow */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = B5FDC2A42F6A0A40005D07B4 /* XCRemoteSwiftPackageReference "Pow" */;
+			productName = Pow;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = B5FDC23E2F69FC9C005D07B4 /* Project object */;
 }
