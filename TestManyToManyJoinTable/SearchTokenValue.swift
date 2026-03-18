@@ -12,6 +12,7 @@ import UIKit
 #endif
 
 import SwiftUI
+import DataProvider
 
 enum SearchTokenValue: Sendable, Identifiable, Equatable, Hashable {
     case keyword(keyword: KeywordSendable)

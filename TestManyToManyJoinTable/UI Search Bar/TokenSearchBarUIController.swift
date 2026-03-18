@@ -8,6 +8,7 @@
 import SwiftData
 import SwiftUI
 import UIKit
+import OSLog
 
 
 @Observable

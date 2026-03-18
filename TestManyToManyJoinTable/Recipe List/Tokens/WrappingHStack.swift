@@ -219,3 +219,13 @@ public struct WrappingHStack: Layout {
         verticalSpacing ?? lhs.spacing.distance(to: rhs.spacing, along: .vertical)
     }
 }
+
+
+#Preview {
+    WrappingHStack {
+        Text("Veggies")
+        Text("Peas")
+        Text("Pork")
+        Text("Chicken")
+    }
+}

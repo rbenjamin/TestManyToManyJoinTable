@@ -10,29 +10,21 @@
 import SwiftUI
 
 struct TagView: View {
-    let token: SearchTokenValue
-//    let label: String
+//    let token: SearchTokenValue
+    let label: String
     let backgroundColor: Color
     let foregroundColor: Color
     let cornerRadius: CGFloat
-    let label: String
     var icon: Image?
     var color: Color?
     
     
-    init(token: SearchTokenValue,
-         cornerRadius: CGFloat,
+    init(label: String,
+         cornerRadius: CGFloat = 12.0,
          backgroundColor: Color = Color.accentColor,
          foregroundColor: Color = Color.white) {
        
-        self.token = token
-        self.label = token.label
-        if let userIcon = token.userIcon {
-            self.icon = userIcon
-        }
-        if let color = token.tokenColor {
-            self.color = color
-        }
+        self.label = label
         self.backgroundColor = backgroundColor
         self.foregroundColor = foregroundColor
         self.cornerRadius = cornerRadius
@@ -40,24 +32,6 @@ struct TagView: View {
     
     var body: some View {
         HStack {
-            #if os(iOS)
-            if let icon {
-                icon
-                    .renderingMode(.template)
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .foregroundStyle(foregroundColor)
-                    .frame(width: 22, height: 22)
-            }
-            #else
-            if let icon {
-                icon
-                    .renderingMode(.template)
-                    .imageScale(.small)
-                    .aspectRatio(contentMode: .fit)
-                    .foregroundStyle(foregroundColor)
-            }
-            #endif
             Text(label)
                 .multilineTextAlignment(.center)
         }
@@ -81,4 +55,8 @@ struct TagView: View {
                 .clipShape(RoundedRectangle(cornerRadius: cornerRadius))
         }
     }
+}
+
+#Preview {
+    TagView(label: "Veggies", cornerRadius: 12.0, backgroundColor: Color.accentColor, foregroundColor: Color.white)
 }

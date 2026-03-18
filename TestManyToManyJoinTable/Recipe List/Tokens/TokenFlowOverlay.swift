@@ -76,7 +76,7 @@ struct TokenFlowOverlay: View {
                         self.tokenButtonPressed(token)
                     } label: {
                         
-                        TagView(token:token, cornerRadius: 12.0)
+                        TagView(label: token.label, cornerRadius: 12.0)
                      
                     }
                     .buttonStyle(.borderless)
@@ -110,7 +110,7 @@ struct TokenFlowOverlay: View {
             Rectangle().fill(.ultraThinMaterial)
                 .ignoresSafeArea()
         }
-        .safeAreaPadding(EdgeInsets(top: 0, bottom: 44))
+        .safeAreaPadding(EdgeInsets(top: 0, leading: 0, bottom: 44, trailing: 0))
 
         #else
         List {
@@ -132,4 +132,13 @@ struct TokenFlowOverlay: View {
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
         #endif
     }
+}
+
+#Preview {
+    TokenFlowOverlay(filteredTokens: .constant([]), visible: .constant(true), focused: .constant(true)) { _ in
+        
+    } filterCancelled: {
+        
+    }
+
 }

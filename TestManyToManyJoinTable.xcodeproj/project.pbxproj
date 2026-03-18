@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		B5FDC2A12F6A09D8005D07B4 /* UserInterfaceExtensions in Frameworks */ = {isa = PBXBuildFile; productRef = B5FDC2A02F6A09D8005D07B4 /* UserInterfaceExtensions */; };
 		B5FDC2A62F6A0A40005D07B4 /* Pow in Frameworks */ = {isa = PBXBuildFile; productRef = B5FDC2A52F6A0A40005D07B4 /* Pow */; };
+		B5FDC7CE2F6B0B2C005D07B4 /* DataProvider in Frameworks */ = {isa = PBXBuildFile; productRef = B5FDC7CD2F6B0B2C005D07B4 /* DataProvider */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -32,6 +33,7 @@
 		B5FDC2462F69FC9C005D07B4 /* TestManyToManyJoinTable.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TestManyToManyJoinTable.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B5FDC2572F69FCA0005D07B4 /* TestManyToManyJoinTableTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TestManyToManyJoinTableTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		B5FDC2612F69FCA0005D07B4 /* TestManyToManyJoinTableUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TestManyToManyJoinTableUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		B5FDCCD72F6B4145005D07B4 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = README.md; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -71,6 +73,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B5FDC7CE2F6B0B2C005D07B4 /* DataProvider in Frameworks */,
 				B5FDC2A12F6A09D8005D07B4 /* UserInterfaceExtensions in Frameworks */,
 				B5FDC2A62F6A0A40005D07B4 /* Pow in Frameworks */,
 			);
@@ -96,9 +99,11 @@
 		B5FDC23D2F69FC9C005D07B4 = {
 			isa = PBXGroup;
 			children = (
+				B5FDCCD72F6B4145005D07B4 /* README.md */,
 				B5FDC2482F69FC9C005D07B4 /* TestManyToManyJoinTable */,
 				B5FDC25A2F69FCA0005D07B4 /* TestManyToManyJoinTableTests */,
 				B5FDC2642F69FCA0005D07B4 /* TestManyToManyJoinTableUITests */,
+				B5FDC7CC2F6B0B2C005D07B4 /* Frameworks */,
 				B5FDC2472F69FC9C005D07B4 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -111,6 +116,13 @@
 				B5FDC2612F69FCA0005D07B4 /* TestManyToManyJoinTableUITests.xctest */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		B5FDC7CC2F6B0B2C005D07B4 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -135,6 +147,7 @@
 			packageProductDependencies = (
 				B5FDC2A02F6A09D8005D07B4 /* UserInterfaceExtensions */,
 				B5FDC2A52F6A0A40005D07B4 /* Pow */,
+				B5FDC7CD2F6B0B2C005D07B4 /* DataProvider */,
 			);
 			productName = TestManyToManyJoinTable;
 			productReference = B5FDC2462F69FC9C005D07B4 /* TestManyToManyJoinTable.app */;
@@ -637,6 +650,10 @@
 			isa = XCSwiftPackageProductDependency;
 			package = B5FDC2A42F6A0A40005D07B4 /* XCRemoteSwiftPackageReference "Pow" */;
 			productName = Pow;
+		};
+		B5FDC7CD2F6B0B2C005D07B4 /* DataProvider */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = DataProvider;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

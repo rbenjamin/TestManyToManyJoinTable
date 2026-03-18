@@ -8,13 +8,16 @@
 import SwiftUI
 import SwiftData
 import OSLog
+import DataProvider
 
 enum TabSelection: String, Hashable, RawRepresentable, Identifiable, CaseIterable {
     case recipes
     case keywords
+    
+    public var id: String {
+        return self.rawValue
+    }
 }
-
-
 
 struct ContentView: View {
     @Environment(\.modelContext) private var modelContext
@@ -22,46 +25,37 @@ struct ContentView: View {
     @State private var model: AppModel = .init()
     let log = Logger(subsystem: "TestManyToManyJoinTable", category: "ContentView")
     let container: ModelContainer
+    
+    init(container: ModelContainer) {
+        self.container = container
+    }
 
     var body: some View {
         TabView(selection: $tabSelection) {
             
-            Tab(value: TabSelection.recipes) {
-                RecipeListNavigator(appModel: model, container: container)
+            Tab("Recipes",
+                systemImage: "fork.knife",
+                value: TabSelection.recipes) {
+                
+                RecipeListNavigator(appModel: model,
+                                    container: container)
             }
             
-            Tab(value: TabSelection.keywords) {
-                KeywordListNavigator(appModel: model)
-            }
-        }
-        .task {
-            do {
-                try await model.fetchAllRecipes(container: container)
-                try await model.fetchAllKeywords(container: container)
-            }
-            catch let error {
-                log.error("Failed to fetch either keywords or recipes. Error Received: \(error.localizedDescription)")
+            Tab("Keywords",
+                systemImage: "tag",
+                value: TabSelection.keywords) {
+                
+                KeywordListNavigator(appModel: model,
+                                     container: container)
             }
         }
     }
-
-    private func addRecipe() {
-        withAnimation {
-            let newItem = Recipe(timestamp: Date())
-            modelContext.insert(newItem)
-        }
-    }
-
-    private func deleteRecipes(offsets: IndexSet) {
-        withAnimation {
-            for index in offsets {
-                modelContext.delete(recipes[index])
-            }
-        }
-    }
+    
 }
 
 #Preview {
-    ContentView()
-        .modelContainer(for: Recipe.self, inMemory: true)
+    let container = DataProvider.previewContainer()
+    
+    ContentView(container: container)
+        .modelContainer(container)
 }

@@ -6,7 +6,15 @@
 //
 import SwiftUI
 import SwiftData
+import DataProvider
+import OSLog
 
+enum RecipeListRoute: Hashable, Codable {
+    case recipeDetails(recipeUUID: UUID)
+}
+enum KeywordListRoute: Hashable, Codable {
+    case keywordRoute(keywordUUID: UUID)
+}
 
 @Observable final class AppModel {
     var recipes: [RecipeSendable] = []
@@ -14,18 +22,28 @@ import SwiftData
     var searchController: TokenSearchBarUIController = .init(searchText: "", tokens: [])
     var filteredTokens: [SearchTokenValue] = []
     var allTokens: [SearchTokenValue] = []
-    
+    var recipePath: NavigationPath = .init()
+    var keywordPath: NavigationPath = .init()
     var tokenListVisible: Bool = false
     
     var searchText: String {
         searchController.searchText
     }
     
-    var searchTokens: String {
+    var searchTokens: Set<SearchTokenValue> {
         searchController.tokens
     }
     
     @ObservationIgnored let log = Logger(subsystem: "TestManyToManyJoinTable", category: "AppModel")
+    
+    func navigateToRecipe(route: RecipeListRoute) {
+        recipePath.append(route)
+    }
+
+    func navigateToKeyword(route: KeywordListRoute) {
+        keywordPath.append(route)
+    }
+
     
     func performSearch(
         searchText: String,
@@ -35,13 +53,21 @@ import SwiftData
         let index = searchText.firstIndex(of: "#")
         guard index != nil else {
             try? await Task.sleep(nanoseconds: 100_000_000)
-            let searchResults: [RecipeSendable]? = try await Task.detached { [searchText, tokens, container] in
-                return self.search(searchText: searchText, tokens: tokens, container: container)
-            }.value
-            if let searchResults {
-                withAnimation {
-                    recipes = searchResults
+            do {
+                let searchResults = try await self.search(searchText: searchText, tokens: tokens, container: container)
+
+                if let searchResults {
+                    withAnimation {
+                        recipes = searchResults
+                    }
                 }
+            }
+            catch let error {
+                #if DEBUG
+                fatalError("[performSearch(searchText: tokens: container:)]: Failed to perform search with error: \(error)")
+                #else
+                log.error("[performSearch(searchText: tokens: container:)]: Failed to perform search with error: \(error.localizedDescription)")
+                #endif
             }
             
             return
@@ -82,6 +108,7 @@ import SwiftData
             if case .keyword(let keyword) = tkn {
                 return keyword.lowercasedLabel.hasPrefix(subword)
             }
+            return false
         })
         withAnimation(.spring) {
             filteredTokens = filtered
@@ -90,12 +117,11 @@ import SwiftData
 
     }
     
-    private nonisolated func search(
+    private func search(
          searchText: String,
          tokens: Set<SearchTokenValue>,
          container: ModelContainer,
-    ) async -> [RecipeSendable]? {
-        let handler = DataHandler(modelContainer: container)
+    ) async throws -> [RecipeSendable]? {
         let tokensIsEmpty = tokens.isEmpty
         let trimmedSearchText = searchText.trimmingCharacters(in: .whitespaces)
         // no tokens or tags (just sort)
@@ -105,32 +131,42 @@ import SwiftData
         
         // No tags being filtered -- just a text search
         if tokensIsEmpty {
-            return handler.recipeSearch(searchText)
+//            return handler.recipeSearch(searchText)
+            return try await Task.detached { [container, searchText] in
+                let handler = DataHandler(modelContainer: container)
+                return try await handler.recipeSearch(searchText)
+            }.value
         }
         
-        var keywordIDs = Set<PersistentIdentifier>()
+        var keywordIDs = Set<UUID>()
         
         for token in tokens {
             if case .keyword(let key) = token {
-                keywordIDs.insert(key.persistentModelID)
+                keywordIDs.insert(key.uuid)
             }
         }
         // search text is empty -- just grab matching recipes for selected keywords
         if trimmedSearchText.isEmpty {
-            let results = handler.recipesForKeywords(keywordIDs: keywordIDs, searchText: nil)
-            // Return results
-            return Array(results).sorted()
+            
+            return try await Task.detached { [container] in
+                let handler = DataHandler(modelContainer: container)
+                let results = try await handler.recipesForKeywords(keywordIDs: keywordIDs, searchText: nil)
+                return Array(results).sorted()
+            }.value
         }
 
         /// User is searching via keywords/tags *AND* search text
-        let results = handler.recipesForKeywords(keywordIDs: keywordIDs, searchText: trimmedSearchText)
-        return Array(results).sorted()
+        return try await Task.detached { [container, keywordIDs, trimmedSearchText] in
+            let handler = DataHandler(modelContainer: container)
+            let results = try await handler.recipesForKeywords(keywordIDs: keywordIDs, searchText: trimmedSearchText)
+            return Array(results).sorted()
+        }.value
     }
 
     
     func fetchAllRecipes(container: ModelContainer) async throws {
 
-        let recipes: [RecipeSendable]? = try await Task.detached { [container] in
+        if let recipes: [RecipeSendable]? = (try await Task.detached { [container] in
             
             let handler = DataHandler(modelContainer: container)
             let recipes = try await handler.fetchRecipes(
@@ -139,16 +175,18 @@ import SwiftData
                 )
             )
             return recipes
-        }.value
-        
-        withAnimation(.spring) {
-            self.recipes = recipes
+        }.value) {
+            
+            withAnimation(.spring) {
+                self.recipes = recipes ?? []
+            }
+
         }
     }
     
     func fetchAllKeywords(container: ModelContainer) async throws {
 
-        let keywords: [KeywordSendable]? = try await Task.detached { [container] in
+        if let keywords: [KeywordSendable]? = (try await Task.detached { [container] in
             
             let handler = DataHandler(modelContainer: container)
             let keywords = try await handler.fetchKeywords(
@@ -157,10 +195,13 @@ import SwiftData
                 )
             )
             return keywords
-        }.value
-        
-        withAnimation(.spring) {
-            self.keywords = keywords
+        }.value) {
+            let searchTokens = keywords?.compactMap({ SearchTokenValue.keyword(keyword: $0) })
+            withAnimation(.spring) {
+                self.keywords = keywords ?? []
+                self.allTokens = searchTokens ?? []
+                
+            }
         }
     }
 }

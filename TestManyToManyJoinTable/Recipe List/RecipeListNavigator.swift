@@ -9,32 +9,50 @@ import Foundation
 import SwiftUI
 import SwiftData
 import OSLog
+import DataProvider
 
 struct RecipeListNavigator: View {
     @Environment(\.modelContext) var modelContext
-    let appModel: AppModel
+    @Bindable var appModel: AppModel
     let container: ModelContainer
+    
 
     var body: some View {
-        NavigationStack {
+        NavigationStack(path: $appModel.recipePath) {
             RecipeListView(appModel: appModel, container: container)
-                .navigationDestination(for: RecipeSendable.self) { recipe in
+                .navigationDestination(for: RecipeListRoute.self) { recipe in
                     // fetch the real recipe
                     recipeView(for: recipe)
                 }
+                .navigationTitle(Text("All Recipes"))
         }
+        .tabBarMinimizeBehavior(.automatic)
     }
     
     @ViewBuilder
-    func recipeView(for sendable: RecipeSendable) -> some View {
-        if let recipe = Recipe.fetch(
-            recipeID: sendable.persistentModelID,
-            modelContext: modelContext
-        ) {
-            RecipeView(recipe: recipe)
+    func recipeView(for route: RecipeListRoute) -> some View {
+        if case .recipeDetails(let recipeUUID) = route {
+            if let recipe = try? Recipe.fetch(recipeUUID: recipeUUID,
+                                              modelContext: modelContext) {
+                RecipeView(recipe: recipe,
+                           container: container)
+            }
+            else {
+                ContentUnavailableView("Cannot load recipe",
+                                       image: "x.circle")
+            }
         }
         else {
-            ContentUnavailableView("Cannot load recipe", image: "x.circle")
+            ContentUnavailableView("Cannot load route",
+                                   image: "x.circle")
         }
     }
+}
+
+#Preview {
+    let container = DataProvider.previewContainer()
+    
+    RecipeListNavigator(appModel: .init(), container: container)
+        .modelContainer(container)
+        .environment(\.modelContext, container.mainContext)
 }
