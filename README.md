@@ -1,12 +1,15 @@
 
 #Demonstrates a Many-to-Many Join Table#
 
-- Built using modern SwiftData best-practices, with the SwiftData package `DataProvider`.
-- Demonstrates `Schema` implementation.
+
+- Demonstrates `Schema` implementation for `@Model` migrations.
 - Demonstrates using thin sendable structs to represent SwiftData entities. 
 - Allows many-to-many relationships to be filtered via predicate.
 - Supports paging and offset in the main list.
 - Demonstrates this support via a search bar that supports filtering via tokens.
+- Does not use `@Query` for main list content. This type of implementation would not work for time-sensitive CloudKit projects that depend on synched devices at all times.
+    - Hopefully Apple will add support for Observable fetches outside of View body.
+- In most cases, I think sticking with `@Query` or with `CoreData` is a better choice than the complexity of this implementation, but I wanted to see whether I could get it working!
 
 ##Warning##
 - Test validation code extensively.  There might be edge-cases with CloudKit.
