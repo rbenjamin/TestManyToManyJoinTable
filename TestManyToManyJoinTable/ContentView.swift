@@ -71,7 +71,11 @@ struct ContentView: View {
         key: AnyHashable
     ) {
         
-        if let recipeID = (userInfo[key] as? [PersistentIdentifier])?.first, let _ = try? Recipe.fetch(recipeID: recipeID, modelContext: modelContext) {
+        if let recipeID = (userInfo[key] as? [PersistentIdentifier])?.first,
+            let _ = try? Recipe.fetch(
+                recipeID: recipeID,
+                modelContext: modelContext
+            ) {
             model.reloadRecipes.toggle()
         } else if let keywordID = (userInfo[key] as? [PersistentIdentifier])?.first, let _ = try? Keyword.fetch(keywordID: keywordID, modelContext: modelContext) {
             model.reloadKeywords.toggle()
@@ -86,11 +90,14 @@ struct ContentView: View {
                     continue
                 }
                 if case .deletedIdentifiers = realKey {
-                    objectNeedsReload(userInfo: userInfo, key: key)
+                    objectNeedsReload(userInfo: userInfo,
+                                      key: key)
                 } else if case .insertedIdentifiers = realKey {
-                    objectNeedsReload(userInfo: userInfo, key: key)
+                    objectNeedsReload(userInfo: userInfo,
+                                      key: key)
                 } else if case .updatedIdentifiers = realKey {
-                    objectNeedsReload(userInfo: userInfo, key: key)
+                    objectNeedsReload(userInfo: userInfo,
+                                      key: key)
                 }
             }
         }

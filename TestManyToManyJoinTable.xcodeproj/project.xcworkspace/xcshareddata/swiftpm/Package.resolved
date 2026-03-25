@@ -1,5 +1,5 @@
 {
-  "originHash" : "54524a546963b082c8862f5a7effdbd248d24f9797b52ae33b09757144f56a60",
+  "originHash" : "87e586babe67d2e0cad5b316f50097f941e296a6bd1af8bc2129725e97a5e2a6",
   "pins" : [
     {
       "identity" : "pow",
@@ -8,6 +8,15 @@
       "state" : {
         "revision" : "a504eb6d144bcf49f4f33029a2795345cb39e6b4",
         "version" : "1.0.5"
+      }
+    },
+    {
+      "identity" : "userinterfaceextensions",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/rbenjamin/UserInterfaceExtensions",
+      "state" : {
+        "branch" : "main",
+        "revision" : "3cb194db9b6c74ad46e325189860bd4d05bea075"
       }
     }
   ],

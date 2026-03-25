@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		B5B239772F74923500F6DFD6 /* UserInterfaceExtensions in Frameworks */ = {isa = PBXBuildFile; productRef = B5B239762F74923500F6DFD6 /* UserInterfaceExtensions */; };
 		B5FDC2A12F6A09D8005D07B4 /* UserInterfaceExtensions in Frameworks */ = {isa = PBXBuildFile; productRef = B5FDC2A02F6A09D8005D07B4 /* UserInterfaceExtensions */; };
 		B5FDC2A62F6A0A40005D07B4 /* Pow in Frameworks */ = {isa = PBXBuildFile; productRef = B5FDC2A52F6A0A40005D07B4 /* Pow */; };
 		B5FDC7CE2F6B0B2C005D07B4 /* DataProvider in Frameworks */ = {isa = PBXBuildFile; productRef = B5FDC7CD2F6B0B2C005D07B4 /* DataProvider */; };
@@ -76,6 +77,7 @@
 				B5FDC7CE2F6B0B2C005D07B4 /* DataProvider in Frameworks */,
 				B5FDC2A12F6A09D8005D07B4 /* UserInterfaceExtensions in Frameworks */,
 				B5FDC2A62F6A0A40005D07B4 /* Pow in Frameworks */,
+				B5B239772F74923500F6DFD6 /* UserInterfaceExtensions in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -148,6 +150,7 @@
 				B5FDC2A02F6A09D8005D07B4 /* UserInterfaceExtensions */,
 				B5FDC2A52F6A0A40005D07B4 /* Pow */,
 				B5FDC7CD2F6B0B2C005D07B4 /* DataProvider */,
+				B5B239762F74923500F6DFD6 /* UserInterfaceExtensions */,
 			);
 			productName = TestManyToManyJoinTable;
 			productReference = B5FDC2462F69FC9C005D07B4 /* TestManyToManyJoinTable.app */;
@@ -232,8 +235,8 @@
 			mainGroup = B5FDC23D2F69FC9C005D07B4;
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
-				B5FDC29F2F6A09D8005D07B4 /* XCLocalSwiftPackageReference "../Cookery/Cookery/Extensions/UserInterfaceExtensions" */,
 				B5FDC2A42F6A0A40005D07B4 /* XCRemoteSwiftPackageReference "Pow" */,
+				B5B239752F74923500F6DFD6 /* XCRemoteSwiftPackageReference "UserInterfaceExtensions" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = B5FDC2472F69FC9C005D07B4 /* Products */;
@@ -623,14 +626,15 @@
 		};
 /* End XCConfigurationList section */
 
-/* Begin XCLocalSwiftPackageReference section */
-		B5FDC29F2F6A09D8005D07B4 /* XCLocalSwiftPackageReference "../Cookery/Cookery/Extensions/UserInterfaceExtensions" */ = {
-			isa = XCLocalSwiftPackageReference;
-			relativePath = ../Cookery/Cookery/Extensions/UserInterfaceExtensions;
-		};
-/* End XCLocalSwiftPackageReference section */
-
 /* Begin XCRemoteSwiftPackageReference section */
+		B5B239752F74923500F6DFD6 /* XCRemoteSwiftPackageReference "UserInterfaceExtensions" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/rbenjamin/UserInterfaceExtensions";
+			requirement = {
+				branch = main;
+				kind = branch;
+			};
+		};
 		B5FDC2A42F6A0A40005D07B4 /* XCRemoteSwiftPackageReference "Pow" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/EmergeTools/Pow";
@@ -642,6 +646,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		B5B239762F74923500F6DFD6 /* UserInterfaceExtensions */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = B5B239752F74923500F6DFD6 /* XCRemoteSwiftPackageReference "UserInterfaceExtensions" */;
+			productName = UserInterfaceExtensions;
+		};
 		B5FDC2A02F6A09D8005D07B4 /* UserInterfaceExtensions */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = UserInterfaceExtensions;

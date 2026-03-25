@@ -13,7 +13,7 @@
 
 ##Warning##
 - Test validation code extensively.  There might be edge-cases with CloudKit.
-- This *should* not be a problem for removal, but if recipes are retrieved by cloudkit before RecipeKeywordIndex values, there could be duplicates created for those indices.
+- This *should* not be a problem for removal, but if recipes are retrieved by cloudkit before the `RecipeKeywordIndex` values, there could be duplicates created for those indices.
 
 ##How-To##
 - To use, configure with your CloudKit settings, or setup to use a basic local SwiftData sqlite db.  Once configured for your app, check DataProvider.swift to ensure the ModelContainer knows the right location for the database.
@@ -21,4 +21,5 @@
 - Regularly validates join tables to ensure they don't go out-of-sync.
 - RecipeKeywordIndex does not maintain real relationships for performance reasons (uses a UUID) -- to ensure the joins are deleted when the recipes are deleted, use DataHandler to delete all objects, especially those that require a join-table.
 - Use a custom migration when implementing a join table to do the initial setup.
+- Depends on UserInterfaceExtensions (https://github.com/rbenjamin/UserInterfaceExtensions) and MovingParts' `Pow` framework for animations.
 
