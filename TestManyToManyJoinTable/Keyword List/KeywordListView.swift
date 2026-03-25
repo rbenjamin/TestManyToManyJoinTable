@@ -50,6 +50,11 @@ struct KeywordListView: View {
                     .foregroundStyle(Color.primary)
                 }
             }
+            .onDelete { indexSet in
+                Task {
+                    await delete(with: indexSet)
+                }
+            }
         }
         .toolbarRole(.navigationStack)
         .toolbar {
@@ -63,6 +68,7 @@ struct KeywordListView: View {
         }
         .onAppear {
             Task {
+                print("fetching all keywords")
                 do {
                     try await appModel.fetchAllKeywords(container: container)
                 }
@@ -70,6 +76,20 @@ struct KeywordListView: View {
                     log.error("Failed to fetch all recipes with error: \(error.localizedDescription)")
                 }
             }
+        }
+    }
+    
+    private func delete(with indexSet: IndexSet) async {
+        var ids: Set<UUID> = []
+        for index in indexSet {
+            ids.insert(appModel.keywords[index].uuid)
+        }
+        do {
+            let handler = DataHandler(modelContainer: container)
+            try await handler.deleteKeywords(uuids: ids)
+        }
+        catch let error {
+            log.error("[delete(with:)]: Failed to delete recipes [count: \(ids.count)]. Error: \(error.localizedDescription)")
         }
     }
     

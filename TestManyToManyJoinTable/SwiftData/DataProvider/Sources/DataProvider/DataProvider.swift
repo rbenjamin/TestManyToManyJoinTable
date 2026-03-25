@@ -9,9 +9,12 @@ import OSLog
 public final class DataProvider: Sendable {
     public static let shared = DataProvider()
     
+    /// Set your own cloud kit database here (in addition to the setup in `Signing & Capabilities`, or remove the `cloudKitDatabase:` argument in `sharedModelContainer` and use a local database.
+    private let database: ModelConfiguration.CloudKitDatabase = .private("com.yoururl.yourapp")
+    
     public let sharedModelContainer: ModelContainer = {
         let schema = Schema(CurrentScheme.models)
-        let modelConfiguration: ModelConfiguration = .init("TestManyToManyJoinTable", schema: schema, allowsSave: true, cloudKitDatabase: .private("iCloud.com.pinwheeldevinc.testing.TestManyToManyJoinTable"))
+        let modelConfiguration: ModelConfiguration = .init("TestManyToManyJoinTable", schema: schema, allowsSave: true, cloudKitDatabase: database)
 
         do {
             return try ModelContainer(for: schema, configurations: [modelConfiguration])

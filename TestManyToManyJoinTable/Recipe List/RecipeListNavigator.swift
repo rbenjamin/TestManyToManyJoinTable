@@ -24,7 +24,7 @@ struct RecipeListNavigator: View {
                     // fetch the real recipe
                     recipeView(for: recipe)
                 }
-                .navigationTitle(Text("All Recipes"))
+                .navigationTitle(Text(appModel.isSearching ? "Search Results" : "All Recipes"))
         }
         .tabBarMinimizeBehavior(.automatic)
     }

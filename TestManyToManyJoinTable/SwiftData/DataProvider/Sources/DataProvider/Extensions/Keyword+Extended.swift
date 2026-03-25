@@ -11,11 +11,22 @@ import Foundation
 
 
 public extension Keyword {
-    static func fetch(keywordID: PersistentIdentifier, modelContext: ModelContext) throws -> Keyword? {
-        let predicate = #Predicate<Keyword> { k in
-            return k.persistentModelID == keywordID
+    
+    static func delete(keywordID: UUID, in context: ModelContext) throws {
+        let predicate = #Predicate<RecipeKeywordIndex> { idx in
+            return idx.keywordID == keywordID
         }
-        return try modelContext.fetch(FetchDescriptor<Keyword>(predicate: predicate)).first
+        try context.delete(model: RecipeKeywordIndex.self, where: predicate)
+        if context.hasChanges {
+            try context.save()
+        }
+    }
+    
+    static var allKeywordsDescriptor: FetchDescriptor<Keyword> {
+        return FetchDescriptor<Keyword>(sortBy: [.init(\Keyword.label, order: .forward)])
+    }
+    static func fetch(keywordID: PersistentIdentifier, modelContext: ModelContext) throws -> Keyword? {
+        return try modelContext.existingModel(for: keywordID)
     }
     
     static func fetch(keywordUUID: UUID, modelContext: ModelContext) throws -> Keyword? {

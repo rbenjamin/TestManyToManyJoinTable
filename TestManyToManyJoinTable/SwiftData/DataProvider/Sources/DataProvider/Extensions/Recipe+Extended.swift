@@ -12,13 +12,17 @@ import SwiftData
 
     
 public extension Recipe {
+    
+    
+    
     // Fetch Request for single recipe
     static func fetch(recipeID: PersistentIdentifier,
                       modelContext: ModelContext) throws -> Recipe? {
-        let predicate = #Predicate<Recipe> { r in
-            return r.persistentModelID == recipeID
-        }
-        return try modelContext.fetch(FetchDescriptor<Recipe>(predicate: predicate)).first
+        return try modelContext.existingModel(for: recipeID)
+//        let predicate = #Predicate<Recipe> { r in
+//            return r.persistentModelID == recipeID
+//        }
+//        return try modelContext.fetch(FetchDescriptor<Recipe>(predicate: predicate)).first
     }
     
     static func fetch(recipeUUID: UUID, modelContext: ModelContext) throws -> Recipe? {
